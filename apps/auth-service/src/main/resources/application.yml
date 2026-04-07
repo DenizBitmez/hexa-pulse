@@ -7,5 +7,16 @@ spring:
       port: 6379
 
 jwt:
-  secret: secret_key_for_testing_purposes_only_must_be_changed_in_prod_1234567890
-  expiration: 86400000 # 24 hours
+  secret: your-very-secure-and-long-secret-key-that-is-at-least-32-characters
+  expiration: 3600000
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: prometheus,health,info
+  endpoint:
+    prometheus:
+      enabled: true
+    health:
+      show-details: always
