@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package sentinel;
+
+option java_multiple_files = true;
+option java_package = "com.sentinel.grpc";
+
+service MessagingService {
+  rpc SendMessage (MessageRequest) returns (MessageResponse);
+}
+
+message MessageRequest {
+  string sender_id = 1;
+  string receiver_id = 2;
+  string content = 3;
+}
+
+message MessageResponse {
+  string message_id = 1;
+  string status = 2;
+}

@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: messaging-service
+  namespace: sentinel-dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: messaging-service
+  template:
+    metadata:
+      labels:
+        app: messaging-service
+    spec:
+      containers:
+      - name: messaging-service
+        image: messaging-service:latest
+        ports:
+        - containerPort: 5222
+        env:
+        - name: KAFKA_BOOTSTRAP_SERVERS
+          value: "kafka:9092"
+        - name: SPRING_DATA_REDIS_HOST
+          value: "redis"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: messaging-service
+  namespace: sentinel-dev
+spec:
+  type: LoadBalancer
+  selector:
+    app: messaging-service
+  ports:
+  - protocol: TCP
+    port: 5222
+    targetPort: 5222

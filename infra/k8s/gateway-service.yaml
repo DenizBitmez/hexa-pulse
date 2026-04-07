@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gateway-service
+  namespace: sentinel-dev
+spec:
+  replicas: 2 # Demonstrate HPA later
+  selector:
+    matchLabels:
+      app: gateway-service
+  template:
+    metadata:
+      labels:
+        app: gateway-service
+    spec:
+      containers:
+      - name: gateway-service
+        image: gateway-service:latest
+        ports:
+        - containerPort: 9090
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "256Mi"
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
+        env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: dev
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gateway-service
+  namespace: sentinel-dev
+spec:
+  type: LoadBalancer # Expose to local machine via Docker Desktop K8s
+  selector:
+    app: gateway-service
+  ports:
+  - protocol: TCP
+    port: 9090
+    targetPort: 9090

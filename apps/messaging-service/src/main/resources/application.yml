@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: messaging-service
+  
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: messaging-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+
+netty:
+  server:
+    port: 5222 # Standard XMPP port
